@@ -1,34 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import type { Session } from '@supabase/supabase-js'
+// import './App.css'
+import AuthPage from './pages/AuthPage'
+import { supabase } from './supabaseClient'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    // Listen for changes
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => {
+      listener.subscription.unsubscribe()
+    }
+  }, [])
+
+
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    setSession(null)
+  }
+
+  if (!session) {
+    return <AuthPage onSignIn={() => supabase.auth.getSession().then(({ data: { session } }) => setSession(session))} />
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-4">Welcome!</h1>
+        <p className="mb-6 text-gray-700">You're signed in as <strong>{session.user.email}</strong></p>
+        <button
+          onClick={signOut}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Sign out
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
