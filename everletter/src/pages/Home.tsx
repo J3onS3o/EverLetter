@@ -20,7 +20,7 @@ const Home = () => {
       {/* Hero Section */}
       <section ref={heroRef} className="hero-section">
         <motion.img
-          src="src/assets/violet_eve_banner.jpg"
+          src="src/assets/everletter_home_banner.png"
           alt="EverLetter Banner"
           className="hero-image"
           style={{ scale: heroScale }}
