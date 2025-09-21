@@ -1,88 +1,114 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import "./Home.css";
 
 const Home = () => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Hero image scale (slight zoom on scroll)
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  // Hero overlay fade in
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+
   return (
     <div className="home-container">
-      {/* Welcome Banner Animation */}
-        <div className="banner-container">
-           <img
-                src="src/assets/violet_eve_banner.jpg"
-                alt="EverLetter Banner"
-                className="banner-image width-full centered-image animate-float"
-            />
-        </div> 
-      {/* Welcome Section */}
-      <div className="welcome-section">
-        <h2 className="welcome-title">Welcome to EverLetter</h2>
-        <p className="welcome-subtitle">A place to cherish your letters and memories</p>
-        <img src="src/assets/everletter.png" alt="EverLetter Banner" className="welcome-decorative" />
-      </div>
+      {/* Hero Section */}
+      <section ref={heroRef} className="hero-section">
+        <motion.img
+          src="src/assets/violet_eve_banner.jpg"
+          alt="EverLetter Banner"
+          className="hero-image"
+          style={{ scale: heroScale }}
+        />
 
-      {/* Action Buttons Grid - Now using Links for navigation */}
+        {/* Floating letters */}
+        <div className="floating-letters">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <motion.span
+              key={i}
+              className="letter-icon"
+              style={{
+                left: `${Math.random() * 100}%`,
+                bottom: `-50px`,
+              }}
+              animate={{ y: [-50, -600], opacity: [0, 1, 0] }}
+              transition={{
+                duration: 6 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+                ease: "easeInOut",
+              }}
+            >
+              ✉️
+            </motion.span>
+          ))}
+        </div>
+
+        {/* Overlay text */}
+        <motion.div className="hero-overlay" style={{ opacity: overlayOpacity }}>
+          <h1>Welcome to <span className="highlight">EverLetter</span></h1>
+          <p>A place to cherish your letters and memories</p>
+        </motion.div>
+      </section>
+
+      {/* Action buttons */}
       <div className="actions-grid">
-        <Link to="/letters" className="action-card">
-          <span className="action-icon">✉️</span>
-          <span className="action-text">Write a Letter</span>
-        </Link>
-        <Link to="/mailroom" className="action-card">
-          <span className="action-icon">📬</span>
-          <span className="action-text">View Mailroom</span>
-        </Link>
-        <Link to="/keepsakes" className="action-card">
-          <span className="action-icon">🎁</span>
-          <span className="action-text">View Keepsakes</span>
-        </Link>
-        <Link to="/doll" className="action-card">
-          <span className="action-icon">👩‍💼</span>
-          <span className="action-text">Auto Memory Doll</span>
-        </Link>
+        <Link to="/letters" className="action-card">✉️ Write a Letter</Link>
+        <Link to="/mailroom" className="action-card">📬 Mailroom</Link>
+        <Link to="/keepsakes" className="action-card">🎁 Keepsakes</Link>
+        <Link to="/doll" className="action-card">👩‍💼 Memory Doll</Link>
       </div>
 
-      {/* Recent Letters Section */}
+      {/* Recent Letters */}
       <div className="section">
-        <h3 className="section-title">Recent Letters</h3>
+        <h3>Recent Letters</h3>
         <div className="letters-list">
           <div className="letter-item">
-            <div className="letter-avatar">L</div>
-            <div className="letter-content">
-              <h4 className="letter-sender">Luke Snyder</h4>
-              <p className="letter-preview">Thank you</p>
+            <div className="avatar">L</div>
+            <div className="content">
+              <h4>Luke Snyder</h4>
+              <p>Thank you</p>
             </div>
-            <span className="letter-date">Jun 5</span>
+            <span className="date">Jun 5</span>
           </div>
           <div className="letter-item">
-            <div className="letter-avatar">M</div>
-            <div className="letter-content">
-              <h4 className="letter-sender">Maria Lee</h4>
-              <p className="letter-preview">Miss you</p>
+            <div className="avatar">M</div>
+            <div className="content">
+              <h4>Maria Lee</h4>
+              <p>Miss you</p>
             </div>
-            <span className="letter-date">May 22</span>
+            <span className="date">May 22</span>
           </div>
         </div>
       </div>
 
-        {/* Recent Keepsakes Section */}
-        <div className="section">
-        <h3 className="section-title">Recent Keepsakes</h3>
+      {/* Recent Keepsakes */}
+      <div className="section">
+        <h3>Recent Keepsakes</h3>
         <div className="keepsakes-list">
-            <div className="keepsake-item">
-                <div className="keepsake-thumbnail">📸</div>
-                <div className="keepsake-info">
-                    <h4 className="keepsake-title">Vacation Photo</h4>
-                    <p className="keepsake-date">Jun 1</p>
-                    </div>
+          <div className="keepsake-item">
+            <div className="thumbnail">📸</div>
+            <div className="info">
+              <h4>Vacation Photo</h4>
+              <p>Jun 1</p>
             </div>
-            <div className="keepsake-item">
-                <div className="keepsake-thumbnail">🎥</div>
-                <div className="keepsake-info">
-                    <h4 className="keepsake-title">Birthday Video</h4>
-                    <p className="keepsake-date">May 20</p>
-                    </div>
+          </div>
+          <div className="keepsake-item">
+            <div className="thumbnail">🎥</div>
+            <div className="info">
+              <h4>Birthday Video</h4>
+              <p>May 20</p>
             </div>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

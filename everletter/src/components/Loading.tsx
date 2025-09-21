@@ -30,7 +30,6 @@ const Loading: React.FC = () => {
         </div>
         
         <h1>EverLetter</h1>
-        <img src="src/assets/everletter.png" alt="EverLetter Decorative" className="loading-decorative" />
         
         <div className="progress-container">
           <div className="progress-bar"></div>
