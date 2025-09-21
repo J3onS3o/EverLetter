@@ -1,53 +1,59 @@
-import { useEffect, useState } from 'react'
-import type { Session } from '@supabase/supabase-js'
-// import './App.css'
-import AuthPage from './pages/AuthPage'
-import { supabase } from './supabaseClient'
-
+import { useEffect, useState } from 'react';
+import AuthPage from './pages/AuthPage';
+import LetterPage from './letters/LetterPage';
+import { supabase } from './supabaseClient';
+import { type Session } from '@supabase/supabase-js';
+import './App.css';
 
 function App() {
-  const [session, setSession] = useState<Session | null>(null)
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+      setSession(session);
+      setIsLoading(false);
+    });
 
-    // Listen for changes
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setIsLoading(false);
+    });
 
-    return () => {
-      listener.subscription.unsubscribe()
-    }
-  }, [])
+    return () => subscription.unsubscribe();
+  }, []);
 
+  const signOut = async (): Promise<void> => {
+    await supabase.auth.signOut();
+    setSession(null);
+  };
 
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    setSession(null)
+  if (isLoading) {
+    return (
+      <div className="auth-container">
+        <div className="auth-card">
+          <h2>Loading...</h2>
+        </div>
+      </div>
+    );
   }
 
-  if (!session) {
-    return <AuthPage onSignIn={() => supabase.auth.getSession().then(({ data: { session } }) => setSession(session))} />
-  }
+  if (!session) return <AuthPage />;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
-        <h1 className="text-2xl font-bold mb-4">Welcome!</h1>
-        <p className="mb-6 text-gray-700">You're signed in as <strong>{session.user.email}</strong></p>
-        <button
-          onClick={signOut}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-        >
-          Sign out
-        </button>
-      </div>
+    <div>
+      <header className="app-header">
+        <h1>My Letter App</h1>
+        <div className="user-info">
+          <span>Signed in as <strong>{session.user.email}</strong></span>
+          <button className="signout-btn" onClick={signOut}>Sign out</button>
+        </div>
+      </header>
+      <LetterPage />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

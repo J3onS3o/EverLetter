@@ -1,12 +1,14 @@
+// supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
+import { type Database } from './database.types'
 
-// Use environment variables from your .env file
+// These should be set in your environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing required Supabase environment variables: VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY');
+  throw new Error('Missing Supabase environment variables')
 }
 
-// Initialize the Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create the Supabase client with proper typing
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
