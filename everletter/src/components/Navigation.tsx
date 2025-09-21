@@ -1,32 +1,31 @@
-import type { Page } from '../App'
+import { Link, useLocation } from 'react-router-dom'
 
-interface NavigationProps {
-  currentPage: Page
-  setCurrentPage: (page: Page) => void
-}
-
-const Navigation = ({ currentPage, setCurrentPage }: NavigationProps) => {
+const Navigation = () => {
+  const location = useLocation()
+  
   const navItems = [
-    { id: 'home' as Page, label: 'Home', icon: '🏠' },
-    { id: 'letters' as Page, label: 'Letters', icon: '✉️' },
-    { id: 'mailroom' as Page, label: 'Mailroom', icon: '📬' },
-    { id: 'keepsakes' as Page, label: 'Keepsakes', icon: '🎁' },
-    { id: 'events' as Page, label: 'Events', icon: '📅' }
+    { label: 'Home', icon: '🏠', path: '/' },
+    { label: 'Letters', icon: '✉️', path: '/letters' },
+    { label: 'Mailroom', icon: '📬', path: '/mailroom' },
+    { label: 'Keepsakes', icon: '🎁', path: '/keepsakes' },
+    { label: 'AMD', icon: '👩‍💼', path: '/doll' }
   ]
 
   return (
-    <nav className="navigation">
-      <div className="navigation-inner">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setCurrentPage(item.id)}
-            className={`nav-item ${currentPage === item.id ? 'nav-item-active' : ''}`}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
-          </button>
-        ))}
+    <nav className="bottom-nav-wrapper">
+      <div className="bottom-nav-container">
+        <div className="nav-container">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-btn ${location.pathname === item.path ? 'nav-btn-active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
+            </Link>
+          ))}
+        </div>
       </div>
     </nav>
   )

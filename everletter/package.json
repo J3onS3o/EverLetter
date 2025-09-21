@@ -12,7 +12,8 @@
   "dependencies": {
     "@capacitor/core": "^7.4.3",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.1"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",

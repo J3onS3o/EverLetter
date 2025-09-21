@@ -1,87 +1,84 @@
+import { Link } from 'react-router-dom'
+
 const Home = () => {
   return (
-    <div className="pb-16">
-      <div className="text-center mb-10 mt-5">
-        <h2 className="text-3xl font-bold text-violet-800 mb-2">Welcome to EverLetter</h2>
-        <p className="text-gray-600">A place to cherish your letters and memories</p>
+    <div className="home-container">
+      {/* Welcome Banner Animation */}
+        <div className="banner-container">
+           <img
+                src="src/assets/violet_eve_banner.jpg"
+                alt="EverLetter Banner"
+                className="banner-image width-full centered-image animate-float"
+            />
+        </div> 
+      {/* Welcome Section */}
+      <div className="welcome-section">
+        <h2 className="welcome-title">Welcome to EverLetter</h2>
+        <p className="welcome-subtitle">A place to cherish your letters and memories</p>
+        <img src="src/assets/everletter.png" alt="EverLetter Banner" className="welcome-decorative" />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-10">
-        <button className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center justify-center h-24">
-          <span className="text-2xl mb-2">✉️</span>
-          <span className="text-sm font-medium">Write a Letter</span>
-        </button>
-        <button className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center justify-center h-24">
-          <span className="text-2xl mb-2">📬</span>
-          <span className="text-sm font-medium">View Mailroom</span>
-        </button>
-        <button className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center justify-center h-24">
-          <span className="text-2xl mb-2">🎁</span>
-          <span className="text-sm font-medium">View Keepsakes</span>
-        </button>
-        <button className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center justify-center h-24">
-          <span className="text-2xl mb-2">📅</span>
-          <span className="text-sm font-medium">Events</span>
-        </button>
+      {/* Action Buttons Grid - Now using Links for navigation */}
+      <div className="actions-grid">
+        <Link to="/letters" className="action-card">
+          <span className="action-icon">✉️</span>
+          <span className="action-text">Write a Letter</span>
+        </Link>
+        <Link to="/mailroom" className="action-card">
+          <span className="action-icon">📬</span>
+          <span className="action-text">View Mailroom</span>
+        </Link>
+        <Link to="/keepsakes" className="action-card">
+          <span className="action-icon">🎁</span>
+          <span className="action-text">View Keepsakes</span>
+        </Link>
+        <Link to="/doll" className="action-card">
+          <span className="action-icon">👩‍💼</span>
+          <span className="action-text">Auto Memory Doll</span>
+        </Link>
       </div>
 
-      <div className="card mb-6">
-        <h3 className="text-lg font-semibold text-violet-800 mb-4">Recent Letters</h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <div className="flex items-center">
-              <div className="bg-violet-100 h-10 w-10 rounded-full flex items-center justify-center mr-3">
-                <span className="text-violet-700 font-semibold">L</span>
-              </div>
-              <div>
-                <h4 className="font-medium">Luke Snyder</h4>
-                <p className="text-sm text-gray-500">Thank you</p>
-              </div>
+      {/* Recent Letters Section */}
+      <div className="section">
+        <h3 className="section-title">Recent Letters</h3>
+        <div className="letters-list">
+          <div className="letter-item">
+            <div className="letter-avatar">L</div>
+            <div className="letter-content">
+              <h4 className="letter-sender">Luke Snyder</h4>
+              <p className="letter-preview">Thank you</p>
             </div>
-            <span className="text-sm text-gray-400">Jun 5</span>
+            <span className="letter-date">Jun 5</span>
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="bg-violet-100 h-10 w-10 rounded-full flex items-center justify-center mr-3">
-                <span className="text-violet-700 font-semibold">M</span>
-              </div>
-              <div>
-                <h4 className="font-medium">Maria Lee</h4>
-                <p className="text-sm text-gray-500">Miss you</p>
-              </div>
+          <div className="letter-item">
+            <div className="letter-avatar">M</div>
+            <div className="letter-content">
+              <h4 className="letter-sender">Maria Lee</h4>
+              <p className="letter-preview">Miss you</p>
             </div>
-            <span className="text-sm text-gray-400">May 22</span>
+            <span className="letter-date">May 22</span>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <h3 className="text-lg font-semibold text-violet-800 mb-4">Upcoming Events</h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="bg-pink-100 h-10 w-10 rounded-full flex items-center justify-center mr-3">
-                <span className="text-pink-700">🎂</span>
-              </div>
-              <div>
-                <h4 className="font-medium">John's Birthday</h4>
-                <p className="text-sm text-gray-500">Sep 10</p>
-              </div>
+        {/* Recent Keepsakes Section */}
+        <div className="section">
+        <h3 className="section-title">Recent Keepsakes</h3>
+        <div className="keepsakes-list">
+            <div className="keepsake-item">
+                <div className="keepsake-thumbnail">📸</div>
+                <div className="keepsake-info">
+                    <h4 className="keepsake-title">Vacation Photo</h4>
+                    <p className="keepsake-date">Jun 1</p>
+                    </div>
             </div>
-            <button className="text-violet-600 text-sm font-medium">Remind</button>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="bg-blue-100 h-10 w-10 rounded-full flex items-center justify-center mr-3">
-                <span className="text-blue-700">💒</span>
-              </div>
-              <div>
-                <h4 className="font-medium">Emma's Wedding</h4>
-                <p className="text-sm text-gray-500">Aug 20</p>
-              </div>
+            <div className="keepsake-item">
+                <div className="keepsake-thumbnail">🎥</div>
+                <div className="keepsake-info">
+                    <h4 className="keepsake-title">Birthday Video</h4>
+                    <p className="keepsake-date">May 20</p>
+                    </div>
             </div>
-            <button className="text-violet-600 text-sm font-medium">Remind</button>
-          </div>
         </div>
       </div>
     </div>

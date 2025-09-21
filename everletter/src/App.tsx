@@ -1,36 +1,48 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import Loading from './components/Loading'
 import Header from './components/Header'
 import Navigation from './components/Navigation'
 import Home from './pages/Home'
 import Letters from './pages/Letters'
 import Mailroom from './pages/Mailroom'
 import Keepsakes from './pages/Keepsakes'
-import Events from './pages/Events'
+import Doll from './pages/Doll'
 import './App.css'
 
-export type Page = 'home' | 'letters' | 'mailroom' | 'keepsakes' | 'events'
-
 function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home')
+  const [isLoading, setIsLoading] = useState(true);
 
-  const renderPage = () => {
-    switch(currentPage) {
-      case 'home': return <Home />
-      case 'letters': return <Letters />
-      case 'mailroom': return <Mailroom />
-      case 'keepsakes': return <Keepsakes />
-      case 'events': return <Events />
-      default: return <Home />
-    }
-  }
+  useEffect(() => {
+    // Simulate loading process (fetching data, initializing app, etc.)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 seconds loading time
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="app">
-      <Header />
-      <main className="app-main">
-        {renderPage()}
-      </main>
-      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <div className="App">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Router>
+          <div className="app-container">
+            <Header />
+            <main className="main-content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/letters" element={<Letters />} />
+                <Route path="/mailroom" element={<Mailroom />} />
+                <Route path="/keepsakes" element={<Keepsakes />} />
+                <Route path="/doll" element={<Doll />} />
+              </Routes>
+            </main>
+            <Navigation />
+          </div>
+        </Router>
+      )}
     </div>
   )
 }
